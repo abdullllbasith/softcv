@@ -26,54 +26,56 @@ const previewStyles: Record<
 function MiniPreview({ id }: { id: TemplateId }) {
   const style = previewStyles[id];
   return (
-    <div className={`relative h-28 w-full overflow-hidden rounded-lg border border-slate-200 ${style.shell}`}>
+    <div
+      className={`relative h-16 w-full overflow-hidden rounded-md border border-slate-200 sm:h-28 sm:rounded-lg ${style.shell}`}
+    >
       {style.layout === 'sidebar' && (
         <div className="flex h-full">
-          <div className={`w-[34%] ${style.accent} p-1.5 space-y-1`}>
-            <div className="mx-auto h-4 w-4 rounded-full bg-white/30" />
-            <div className="h-1 w-full rounded bg-white/25" />
-            <div className="h-1 w-4/5 rounded bg-white/20" />
-            <div className="mt-2 space-y-0.5">
-              <div className="h-1 w-full rounded bg-white/20" />
-              <div className="h-1 w-3/4 rounded bg-white/15" />
+          <div className={`w-[34%] ${style.accent} p-1 space-y-0.5 sm:p-1.5 sm:space-y-1`}>
+            <div className="mx-auto h-2.5 w-2.5 rounded-full bg-white/30 sm:h-4 sm:w-4" />
+            <div className="h-0.5 w-full rounded bg-white/25 sm:h-1" />
+            <div className="h-0.5 w-4/5 rounded bg-white/20 sm:h-1" />
+            <div className="mt-1 space-y-0.5 sm:mt-2">
+              <div className="h-0.5 w-full rounded bg-white/20 sm:h-1" />
+              <div className="h-0.5 w-3/4 rounded bg-white/15 sm:h-1" />
             </div>
           </div>
-          <div className="flex-1 p-2 space-y-1.5">
-            <div className={`h-1 w-1/3 rounded ${style.accent}`} />
-            <div className="h-1 w-full rounded bg-slate-200" />
-            <div className="h-1 w-5/6 rounded bg-slate-200" />
-            <div className={`mt-2 h-1 w-1/4 rounded ${style.accent}`} />
-            <div className="h-1 w-full rounded bg-slate-200" />
-            <div className="h-1 w-4/5 rounded bg-slate-200" />
+          <div className="flex-1 space-y-1 p-1.5 sm:space-y-1.5 sm:p-2">
+            <div className={`h-0.5 w-1/3 rounded sm:h-1 ${style.accent}`} />
+            <div className="h-0.5 w-full rounded bg-slate-200 sm:h-1" />
+            <div className="h-0.5 w-5/6 rounded bg-slate-200 sm:h-1" />
+            <div className={`mt-1 h-0.5 w-1/4 rounded sm:mt-2 sm:h-1 ${style.accent}`} />
+            <div className="h-0.5 w-full rounded bg-slate-200 sm:h-1" />
+            <div className="h-0.5 w-4/5 rounded bg-slate-200 sm:h-1" />
           </div>
         </div>
       )}
       {style.layout === 'banner' && (
         <div className="flex h-full flex-col">
-          <div className={`flex h-8 items-center gap-1.5 px-2 ${style.accent}`}>
-            <div className="h-4 w-4 rounded-full bg-white/30" />
-            <div className="h-1.5 w-12 rounded bg-white/40" />
+          <div className={`flex h-5 items-center gap-1 px-1.5 sm:h-8 sm:gap-1.5 sm:px-2 ${style.accent}`}>
+            <div className="h-2.5 w-2.5 rounded-full bg-white/30 sm:h-4 sm:w-4" />
+            <div className="h-1 w-8 rounded bg-white/40 sm:h-1.5 sm:w-12" />
           </div>
-          <div className="flex-1 space-y-1 p-2">
-            <div className="h-1 w-full rounded bg-slate-200" />
-            <div className="h-1 w-5/6 rounded bg-slate-200" />
-            <div className="h-1 w-2/3 rounded bg-slate-200" />
+          <div className="flex-1 space-y-0.5 p-1.5 sm:space-y-1 sm:p-2">
+            <div className="h-0.5 w-full rounded bg-slate-200 sm:h-1" />
+            <div className="h-0.5 w-5/6 rounded bg-slate-200 sm:h-1" />
+            <div className="h-0.5 w-2/3 rounded bg-slate-200 sm:h-1" />
           </div>
         </div>
       )}
       {(style.layout === 'single' || style.layout === 'dense') && (
-        <div className={`space-y-1 p-2.5 ${style.layout === 'dense' ? 'space-y-0.5' : ''}`}>
-          <div className="h-2 w-1/2 rounded bg-slate-800/80" />
+        <div className={`space-y-0.5 p-1.5 sm:space-y-1 sm:p-2.5 ${style.layout === 'dense' ? 'sm:space-y-0.5' : ''}`}>
+          <div className="h-1.5 w-1/2 rounded bg-slate-800/80 sm:h-2" />
           <div className={`h-0.5 w-full rounded ${style.accent} opacity-60`} />
-          <div className="h-1 w-full rounded bg-slate-200" />
-          <div className="h-1 w-5/6 rounded bg-slate-200" />
-          <div className="mt-1.5 h-1 w-1/3 rounded bg-slate-700/70" />
-          <div className="h-1 w-full rounded bg-slate-200" />
-          <div className="h-1 w-4/5 rounded bg-slate-200" />
+          <div className="h-0.5 w-full rounded bg-slate-200 sm:h-1" />
+          <div className="h-0.5 w-5/6 rounded bg-slate-200 sm:h-1" />
+          <div className="mt-1 h-0.5 w-1/3 rounded bg-slate-700/70 sm:mt-1.5 sm:h-1" />
+          <div className="h-0.5 w-full rounded bg-slate-200 sm:h-1" />
+          <div className="h-0.5 w-4/5 rounded bg-slate-200 sm:h-1" />
           {style.layout === 'dense' && (
             <>
-              <div className="h-1 w-full rounded bg-slate-200" />
-              <div className="h-1 w-3/4 rounded bg-slate-200" />
+              <div className="hidden h-1 w-full rounded bg-slate-200 sm:block" />
+              <div className="hidden h-1 w-3/4 rounded bg-slate-200 sm:block" />
             </>
           )}
         </div>
@@ -114,7 +116,7 @@ export const TemplatePicker: React.FC<TemplatePickerProps> = ({ open, onSelect }
           </p>
         </motion.div>
 
-        <div className="grid flex-1 grid-cols-1 gap-3 overflow-y-auto pb-4 sm:grid-cols-2 lg:grid-cols-3 sm:gap-4">
+        <div className="grid flex-1 grid-cols-2 gap-2 overflow-y-auto pb-4 sm:gap-4 lg:grid-cols-3">
           {RESUME_TEMPLATES.map((tmpl, i) => {
             const isActive = selected === tmpl.id;
             return (
@@ -126,24 +128,26 @@ export const TemplatePicker: React.FC<TemplatePickerProps> = ({ open, onSelect }
                 transition={{ delay: 0.04 * i, duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
                 onClick={() => setSelected(tmpl.id)}
                 onDoubleClick={() => onSelect(tmpl.id)}
-                className={`group relative flex flex-col rounded-2xl border bg-white p-3 text-left shadow-sm transition-all sm:p-4 ${
+                className={`group relative flex flex-col rounded-xl border bg-white p-2 text-left shadow-sm transition-all sm:rounded-2xl sm:p-4 ${
                   isActive
                     ? 'border-teal-500 ring-2 ring-teal-500/25 shadow-md'
                     : 'border-slate-200 hover:border-slate-300 hover:shadow-md'
                 }`}
               >
                 {isActive && (
-                  <span className="absolute right-3 top-3 flex h-6 w-6 items-center justify-center rounded-full bg-teal-600 text-white shadow-sm">
-                    <Check className="h-3.5 w-3.5" strokeWidth={2.5} />
+                  <span className="absolute right-1.5 top-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-teal-600 text-white shadow-sm sm:right-3 sm:top-3 sm:h-6 sm:w-6">
+                    <Check className="h-3 w-3 sm:h-3.5 sm:w-3.5" strokeWidth={2.5} />
                   </span>
                 )}
                 <MiniPreview id={tmpl.id} />
-                <div className="mt-3">
-                  <p className="font-display text-sm font-semibold text-slate-900">{tmpl.name}</p>
-                  <p className="mt-0.5 text-[11px] font-medium uppercase tracking-wide text-teal-700">
+                <div className="mt-2 min-w-0 sm:mt-3">
+                  <p className="font-display text-xs font-semibold text-slate-900 sm:text-sm">{tmpl.name}</p>
+                  <p className="mt-0.5 truncate text-[9px] font-medium uppercase tracking-wide text-teal-700 sm:text-[11px]">
                     {tmpl.desc}
                   </p>
-                  <p className="mt-1.5 text-xs leading-relaxed text-slate-500">{tmpl.blurb}</p>
+                  <p className="mt-1 hidden text-xs leading-relaxed text-slate-500 sm:mt-1.5 sm:line-clamp-3 sm:block">
+                    {tmpl.blurb}
+                  </p>
                 </div>
               </motion.button>
             );

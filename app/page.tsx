@@ -2,14 +2,17 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion, useReducedMotion, AnimatePresence } from 'framer-motion';
 import {
   ArrowUpRight,
   CheckCircle2,
+  ChevronRight,
   FileDown,
   LayoutTemplate,
+  Menu,
   MessageSquare,
   SplitSquareHorizontal,
+  X,
 } from 'lucide-react';
 
 const ease = [0.16, 1, 0.3, 1] as const;
@@ -66,6 +69,7 @@ const templates = [
 
 export default function LandingPage() {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const reduceMotion = useReducedMotion();
 
   useEffect(() => {
@@ -75,6 +79,31 @@ export default function LandingPage() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  useEffect(() => {
+    if (!menuOpen) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setMenuOpen(false);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => {
+      document.body.style.overflow = prev;
+      window.removeEventListener('keydown', onKey);
+    };
+  }, [menuOpen]);
+
+  const closeMenu = () => setMenuOpen(false);
+
+  /** Shared mobile shell width — closed pill and open menu must match */
+  const mobileHeaderWidth = 'w-[min(18.5rem,calc(100%-2rem))]';
+
+  const mobileNavLinks = [
+    { label: 'Softora', href: 'https://softora-co.vercel.app/', external: true },
+    { label: 'How it works', href: '#how' },
+    { label: 'Features', href: '#features' },
+    { label: 'Templates', href: '#templates' },
+  ] as const;
   return (
     <div className="min-h-[100dvh] overflow-y-auto overflow-x-hidden bg-[#f7f8fa] text-slate-900">
       <div className="pointer-events-none fixed inset-0 -z-10">
@@ -93,18 +122,19 @@ export default function LandingPage() {
         <div className="absolute top-[30%] left-[-8%] h-[320px] w-[320px] rounded-full bg-cyan-300/10 blur-[90px]" />
       </div>
 
-      {/* Fixed floating header */}
-      <div className="pointer-events-none fixed top-4 right-0 left-0 z-50 flex justify-center px-4 safe-top">
+      {/* Fixed floating header — Softora-size pill; menu expands from this same bar */}
+      <div className="pointer-events-none fixed top-4 right-0 left-0 z-50 flex flex-col items-center px-4 safe-top">
         <header
-          className={`pointer-events-auto relative w-full max-w-5xl rounded-2xl border border-slate-200 bg-white/95 shadow-sm backdrop-blur-md transition-shadow duration-300 ${
-            isScrolled ? 'shadow-md' : ''
+          className={`pointer-events-auto relative ${mobileHeaderWidth} lg:w-fit lg:max-w-[calc(100%-2rem)] rounded-2xl border border-slate-200 bg-white/95 shadow-sm backdrop-blur-md transition-shadow duration-300 ${
+            isScrolled || menuOpen ? 'shadow-md' : ''
           }`}
         >
-          <div className="flex items-center justify-between gap-4 px-4 py-3 md:px-6">
+          <div className="flex w-full items-center justify-between gap-10 px-4 py-3.5 sm:gap-12 sm:px-5 sm:py-4">
             <Link
               href="/"
               className="inline-flex min-w-0 shrink-0 items-center group"
               aria-label="SoftCV"
+              onClick={closeMenu}
             >
               <img
                 src="/SoftCV.png"
@@ -113,45 +143,112 @@ export default function LandingPage() {
               />
             </Link>
 
-            <nav className="flex shrink-0 items-center gap-2 sm:gap-3">
+            <nav className="hidden shrink-0 items-center gap-1 lg:flex">
               <a
                 href="https://softora-co.vercel.app/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hidden px-3 py-2 text-sm font-medium text-slate-600 transition-colors hover:text-slate-900 sm:inline-flex"
+                className="px-2.5 py-1.5 text-sm font-medium text-slate-600 transition-colors hover:text-slate-900"
               >
                 Softora
               </a>
               <a
                 href="#how"
-                className="hidden px-3 py-2 text-sm font-medium text-slate-600 transition-colors hover:text-slate-900 sm:inline-flex"
+                className="px-2.5 py-1.5 text-sm font-medium text-slate-600 transition-colors hover:text-slate-900"
               >
                 How it works
               </a>
               <a
                 href="#features"
-                className="hidden px-3 py-2 text-sm font-medium text-slate-600 transition-colors hover:text-slate-900 md:inline-flex"
+                className="px-2.5 py-1.5 text-sm font-medium text-slate-600 transition-colors hover:text-slate-900"
               >
                 Features
               </a>
               <Link
                 href="/builder?chooseTemplate=1"
-                className="inline-flex items-center gap-1.5 rounded-xl bg-slate-900 px-3.5 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-teal-600 sm:px-4"
+                className="ml-1 inline-flex items-center gap-1.5 rounded-xl bg-slate-900 px-3.5 py-2 text-sm font-medium text-white shadow-sm transition-colors hover:bg-teal-600"
               >
                 Open SoftCV
                 <ArrowUpRight className="h-3.5 w-3.5" />
               </Link>
             </nav>
+
+            <button
+              type="button"
+              className="inline-flex h-9 w-9 items-center justify-center rounded-lg text-slate-900 transition-colors hover:bg-slate-100 lg:hidden"
+              aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+              aria-expanded={menuOpen}
+              onClick={() => setMenuOpen((v) => !v)}
+            >
+              {menuOpen ? (
+                <X className="h-5 w-5" strokeWidth={2} />
+              ) : (
+                <Menu className="h-5 w-5" strokeWidth={2} />
+              )}
+            </button>
           </div>
         </header>
+
+        {/* Dropdown from the same header — Softora style (no second logo bar) */}
+        <AnimatePresence>
+          {menuOpen && (
+            <motion.div
+              role="dialog"
+              aria-modal="true"
+              aria-label="Navigation"
+              initial={reduceMotion ? false : { opacity: 0, y: -8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.28, ease }}
+              className={`pointer-events-auto relative z-10 mt-2 h-fit ${mobileHeaderWidth} overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_16px_40px_-16px_rgba(15,23,42,0.3)] lg:hidden`}
+            >
+              <nav className="flex flex-col px-2 py-1.5">
+                {mobileNavLinks.map((item) => (
+                  <a
+                    key={item.label}
+                    href={item.href}
+                    {...('external' in item && item.external
+                      ? { target: '_blank', rel: 'noopener noreferrer' }
+                      : {})}
+                    onClick={closeMenu}
+                    className="group flex items-center justify-between rounded-xl px-4 py-3 text-[15px] font-medium text-slate-700 transition-colors hover:bg-slate-50 hover:text-slate-900"
+                  >
+                    {item.label}
+                    <ChevronRight className="h-4 w-4 text-slate-300 transition-colors group-hover:text-slate-500" />
+                  </a>
+                ))}
+              </nav>
+
+              <div className="border-t border-slate-100 p-3">
+                <Link
+                  href="/builder?chooseTemplate=1"
+                  onClick={closeMenu}
+                  className="inline-flex w-full items-center justify-center gap-1.5 rounded-xl bg-slate-900 px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-teal-600"
+                >
+                  Open SoftCV
+                  <ArrowUpRight className="h-3.5 w-3.5" />
+                </Link>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
+      {menuOpen && (
+        <button
+          type="button"
+          className="fixed inset-0 z-40 bg-transparent lg:hidden"
+          aria-label="Close menu"
+          onClick={closeMenu}
+        />
+      )}
+
       <main className="relative z-10">
-        {/* Hero — full first viewport only */}
+        {/* Hero — full first viewport only (mobile matches Softora: text+CTAs, no mockup) */}
         <section className="flex min-h-[100dvh] items-center">
-          <div className="mx-auto w-full max-w-6xl px-5 pb-12 pt-24 sm:px-8 sm:pb-16 sm:pt-28 lg:px-10 lg:pt-28">
+          <div className="mx-auto w-full max-w-6xl px-5 pb-16 pt-32 sm:px-8 sm:pb-20 sm:pt-36 lg:px-10 lg:pb-16 lg:pt-28">
           <div className="grid items-center gap-12 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)] lg:gap-10">
-            <div className="max-w-xl">
+            <div className="mx-auto w-full max-w-xl text-center lg:mx-0 lg:text-left">
               <motion.h1
                 initial={reduceMotion ? false : { opacity: 0, y: 14 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -165,7 +262,7 @@ export default function LandingPage() {
                 initial={reduceMotion ? false : { opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.12, duration: 0.5, ease }}
-                className="mt-5 max-w-lg text-[15px] leading-relaxed text-slate-600 sm:text-lg"
+                className="mx-auto mt-6 max-w-lg text-[15px] leading-relaxed text-slate-600 sm:mt-7 sm:text-lg lg:mx-0"
               >
                 SoftCV is Softora&apos;s live resume builder: split-screen editing, ATS-aware templates,
                 AI polish, and PDF export that matches the preview. Free to use — open SoftCV and start
@@ -176,18 +273,18 @@ export default function LandingPage() {
                 initial={reduceMotion ? false : { opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.18, duration: 0.45, ease }}
-                className="mt-8 flex flex-wrap items-center gap-3"
+                className="mt-10 flex w-full flex-col items-stretch gap-3 sm:mx-auto sm:mt-10 sm:max-w-md lg:mx-0 lg:mt-8 lg:max-w-none lg:flex-row lg:flex-wrap lg:items-center"
               >
                 <Link
                   href="/builder?chooseTemplate=1"
-                  className="inline-flex items-center gap-2 rounded-xl bg-slate-900 px-6 py-3.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-teal-600"
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-slate-900 px-6 py-3.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-teal-600 lg:w-auto"
                 >
                   Start building — it&apos;s free
                   <ArrowUpRight className="h-4 w-4" />
                 </Link>
                 <a
                   href="#how"
-                  className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-5 py-3.5 text-sm font-medium text-slate-800 shadow-sm transition-colors hover:border-slate-300 hover:bg-slate-50"
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-5 py-3.5 text-sm font-medium text-slate-800 shadow-sm transition-colors hover:border-slate-300 hover:bg-slate-50 lg:w-auto"
                 >
                   See how it works
                 </a>
@@ -197,7 +294,7 @@ export default function LandingPage() {
                 initial={reduceMotion ? false : { opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.28, duration: 0.5 }}
-                className="mt-8 flex flex-wrap gap-x-5 gap-y-2 text-sm text-slate-500"
+                className="mt-10 flex flex-wrap justify-center gap-x-5 gap-y-2.5 text-sm text-slate-500 lg:mt-8 lg:justify-start"
               >
                 {['Free forever', 'No login required', 'Works in your browser', 'PDF export'].map((item) => (
                   <li key={item} className="inline-flex items-center gap-1.5">
@@ -208,12 +305,12 @@ export default function LandingPage() {
               </motion.ul>
             </div>
 
-            {/* Product visual — resume sheet as main anchor */}
+            {/* Product visual — desktop only (Softora-style mobile hero has no mockup) */}
             <motion.div
               initial={reduceMotion ? false : { opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.15, duration: 0.65, ease }}
-              className="relative mx-auto w-full max-w-md lg:mx-0 lg:max-w-none"
+              className="relative mx-auto hidden w-full max-w-md lg:mx-0 lg:block lg:max-w-none"
               aria-hidden
             >
               <div className="absolute -inset-6 rounded-[2rem] bg-gradient-to-br from-teal-500/10 via-transparent to-slate-900/5 blur-2xl" />
