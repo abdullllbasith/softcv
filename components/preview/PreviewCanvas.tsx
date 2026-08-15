@@ -75,6 +75,7 @@ export const PreviewCanvas: React.FC = () => {
   const lastPointerRef = useRef<{ x: number; y: number } | null>(null);
   const pendingFocusRef = useRef<ZoomFocus | null>(null);
   const scaleRef = useRef(1);
+  const pinchActiveRef = useRef(false);
 
   useEffect(() => {
     const handleResize = () => {
@@ -256,6 +257,93 @@ export const PreviewCanvas: React.FC = () => {
     return () => el.removeEventListener('wheel', onWheel);
   }, [bumpZoom]);
 
+  // Pinch-to-zoom for phones / tablets (two fingers, no browser interference)
+  useEffect(() => {
+    const el = viewportRef.current;
+    if (!el) return;
+
+    type PinchState = {
+      startDist: number;
+      startPercent: number;
+      lastPercent: number;
+    };
+
+    let pinch: PinchState | null = null;
+    let raf = 0;
+    let pendingMid: { x: number; y: number } | null = null;
+
+    const distance = (a: Touch, b: Touch) =>
+      Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY);
+
+    const midpoint = (a: Touch, b: Touch) => ({
+      x: (a.clientX + b.clientX) / 2,
+      y: (a.clientY + b.clientY) / 2,
+    });
+
+    const clearPinch = () => {
+      pinch = null;
+      pinchActiveRef.current = false;
+      cancelAnimationFrame(raf);
+      raf = 0;
+      pendingMid = null;
+    };
+
+    const onTouchStart = (e: TouchEvent) => {
+      if (e.touches.length < 2) return;
+      const dist = distance(e.touches[0], e.touches[1]);
+      if (dist < 10) return;
+
+      // Cancel any one-finger pan so pinch isn't interrupted
+      panStartRef.current = null;
+      setIsPanning(false);
+      pinchActiveRef.current = true;
+
+      const startPercent = Math.round(scaleRef.current * 100);
+      pinch = { startDist: dist, startPercent, lastPercent: startPercent };
+      e.preventDefault();
+    };
+
+    const onTouchMove = (e: TouchEvent) => {
+      if (!pinch || e.touches.length < 2) return;
+      e.preventDefault();
+
+      const dist = distance(e.touches[0], e.touches[1]);
+      if (dist < 10 || pinch.startDist < 10) return;
+
+      const next = Math.min(
+        ZOOM_MAX,
+        Math.max(ZOOM_MIN, Math.round(pinch.startPercent * (dist / pinch.startDist)))
+      );
+      pendingMid = midpoint(e.touches[0], e.touches[1]);
+      if (next === pinch.lastPercent) return;
+      pinch.lastPercent = next;
+
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        const mid = pendingMid;
+        if (!mid) return;
+        zoomTo(next, mid.x, mid.y);
+      });
+    };
+
+    const onTouchEnd = (e: TouchEvent) => {
+      if (e.touches.length < 2) clearPinch();
+    };
+
+    el.addEventListener('touchstart', onTouchStart, { passive: false });
+    el.addEventListener('touchmove', onTouchMove, { passive: false });
+    el.addEventListener('touchend', onTouchEnd);
+    el.addEventListener('touchcancel', onTouchEnd);
+
+    return () => {
+      clearPinch();
+      el.removeEventListener('touchstart', onTouchStart);
+      el.removeEventListener('touchmove', onTouchMove);
+      el.removeEventListener('touchend', onTouchEnd);
+      el.removeEventListener('touchcancel', onTouchEnd);
+    };
+  }, [zoomTo]);
+
   const trackPointer = (clientX: number, clientY: number) => {
     lastPointerRef.current = { x: clientX, y: clientY };
   };
@@ -287,6 +375,7 @@ export const PreviewCanvas: React.FC = () => {
 
   const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
     trackPointer(e.clientX, e.clientY);
+    if (pinchActiveRef.current) return;
     const shouldPan = isHandTool || e.button === 1 || spaceHeldRef.current;
     if (!shouldPan || e.button === 2) return;
     e.preventDefault();
@@ -296,6 +385,7 @@ export const PreviewCanvas: React.FC = () => {
 
   const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
     trackPointer(e.clientX, e.clientY);
+    if (pinchActiveRef.current) return;
     if (!isPanning) return;
     e.preventDefault();
     movePan(e.clientX, e.clientY);
@@ -417,7 +507,7 @@ export const PreviewCanvas: React.FC = () => {
 
       <div
         ref={viewportRef}
-        className={`pane-scroll flex-1 min-h-0 overflow-y-auto overflow-x-auto overscroll-contain ${
+        className={`pane-scroll flex-1 min-h-0 overflow-y-auto overflow-x-auto overscroll-contain touch-[pan-x_pan-y] ${
           isPanning || isHandTool ? 'pane-scroll--instant' : ''
         } ${cursorClass}`}
         onPointerDown={handlePointerDown}

@@ -187,7 +187,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAtsModal }) => {
         <div className="flex items-center gap-2 sm:gap-4 min-w-0">
           <Link
             href="/"
-            className="flex items-center shrink-0 min-w-0 group"
+            className="hidden sm:flex items-center shrink-0 min-w-0 group"
             title="SoftCV home"
           >
             <img
@@ -401,12 +401,35 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenAtsModal }) => {
           </div>
         </div>
 
-        {/* Right: mobile menu + export */}
+        {/* Right: mobile undo/redo + menu + export */}
         <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+          <div className="flex items-center gap-1.5 lg:hidden">
+            <button
+              type="button"
+              onClick={undo}
+              disabled={!canUndo()}
+              className="flex h-[42px] w-[42px] items-center justify-center rounded-xl border border-slate-200 bg-slate-50 text-slate-700 transition-colors hover:bg-slate-100 disabled:opacity-30"
+              title="Undo"
+              aria-label="Undo"
+            >
+              <Undo2 className="h-5 w-5" />
+            </button>
+            <button
+              type="button"
+              onClick={redo}
+              disabled={!canRedo()}
+              className="flex h-[42px] w-[42px] items-center justify-center rounded-xl border border-slate-200 bg-slate-50 text-slate-700 transition-colors hover:bg-slate-100 disabled:opacity-30"
+              title="Redo"
+              aria-label="Redo"
+            >
+              <Redo2 className="h-5 w-5" />
+            </button>
+          </div>
+
           <button
             type="button"
             onClick={() => setShowMobileMenu(true)}
-            className="lg:hidden p-2.5 rounded-xl border border-slate-200 bg-slate-50 text-slate-700 hover:bg-slate-100 touch-target"
+            className="lg:hidden flex h-[42px] w-[42px] items-center justify-center rounded-xl border border-slate-200 bg-slate-50 text-slate-700 hover:bg-slate-100"
             title="More tools"
             aria-label="Open menu"
           >

@@ -125,7 +125,7 @@ export default function LandingPage() {
       {/* Fixed floating header — Softora-size pill; menu expands from this same bar */}
       <div className="pointer-events-none fixed top-4 right-0 left-0 z-50 flex flex-col items-center px-4 safe-top">
         <header
-          className={`pointer-events-auto relative ${mobileHeaderWidth} lg:w-fit lg:max-w-[calc(100%-2rem)] rounded-2xl border border-slate-200 bg-white/95 shadow-sm backdrop-blur-md transition-shadow duration-300 ${
+          className={`pointer-events-auto relative ${mobileHeaderWidth} lg:w-full lg:max-w-5xl rounded-2xl border border-slate-200 bg-white/95 shadow-sm backdrop-blur-md transition-shadow duration-300 ${
             isScrolled || menuOpen ? 'shadow-md' : ''
           }`}
         >
