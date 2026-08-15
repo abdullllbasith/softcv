@@ -1,0 +1,341 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,600;0,700;1,400&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #ffffff;
+  --foreground: #0f172a;
+  --border: #e2e8f0;
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
+  --font-serif: 'Lora', Georgia, serif;
+  --softora: #0d9488;
+  --softora-deep: #0f766e;
+  --softora-light: #8ebcc4;
+  --softora-soft: #83b7c0;
+  --surface: #f8fafc;
+  --muted-foreground: #64748b;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--surface);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-display);
+  letter-spacing: -0.02em;
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+/* Softora utility patterns (aligned with softora-co.vercel.app) */
+.text-gradient {
+  @apply bg-gradient-to-r from-teal-600 via-teal-500 to-softora-soft bg-clip-text text-transparent;
+}
+
+.bg-gradient-premium {
+  @apply bg-gradient-to-br from-teal-50 via-white to-cyan-50;
+}
+
+.surface-panel {
+  @apply rounded-2xl border border-slate-100 bg-white shadow-soft;
+}
+
+.btn-softora {
+  @apply inline-flex items-center justify-center gap-2 rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-medium text-white shadow-sm transition-colors hover:bg-teal-600;
+}
+
+.btn-softora-secondary {
+  @apply inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-900 transition-colors hover:border-slate-300 hover:bg-slate-50;
+}
+
+/* Touch-friendly hit areas */
+.touch-target {
+  min-width: 44px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.safe-top {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+@keyframes sheet-up {
+  from {
+    transform: translateY(100%);
+    opacity: 0.6;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-sheet-up {
+  animation: sheet-up 0.28s ease-out;
+}
+
+/* Prevent iOS rubber-band scrolling the whole app */
+@supports (height: 100dvh) {
+  .h-\[100dvh\] {
+    height: 100dvh;
+  }
+  .max-h-\[100dvh\] {
+    max-height: 100dvh;
+  }
+}
+
+/* Custom scrollbars — Softora style */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+@media (max-width: 768px) {
+  ::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Shared smooth pane scrolling (editor + preview) */
+.pane-scroll {
+  scroll-behavior: smooth;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
+}
+.pane-scroll::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.pane-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.pane-scroll::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 9999px;
+}
+.pane-scroll::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+/* Keep hand-tool panning instantaneous */
+.pane-scroll.pane-scroll--instant {
+  scroll-behavior: auto;
+}
+@media (prefers-reduced-motion: reduce) {
+  .pane-scroll {
+    scroll-behavior: auto;
+  }
+}
+
+/* Agent chat — smooth inertia + soft scrollbar */
+.agent-chat-scroll {
+  scroll-behavior: smooth;
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
+}
+.agent-chat-scroll::-webkit-scrollbar {
+  width: 5px;
+}
+.agent-chat-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.agent-chat-scroll::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 9999px;
+}
+.agent-chat-scroll::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+@media (prefers-reduced-motion: reduce) {
+  .agent-chat-scroll {
+    scroll-behavior: auto;
+  }
+}
+
+/* Endless shine on agent loading status text (Softora teal) */
+.agent-status-shine {
+  display: inline-block;
+  background-image: linear-gradient(
+    110deg,
+    #64748b 0%,
+    #64748b 38%,
+    #e2e8f0 48%,
+    #0d9488 52%,
+    #e2e8f0 56%,
+    #64748b 66%,
+    #64748b 100%
+  );
+  background-size: 220% 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  animation: agent-status-shine 1.6s linear infinite;
+}
+@keyframes agent-status-shine {
+  0% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: -100% 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .agent-status-shine {
+    animation: none;
+    color: #64748b;
+    -webkit-text-fill-color: #64748b;
+    background: none;
+  }
+}
+
+/* A4 Printable Dimensions */
+.a4-page {
+  width: 210mm;
+  min-height: 297mm;
+  background-color: #ffffff;
+  margin: 0 auto;
+  box-sizing: border-box;
+  position: relative;
+}
+
+/* Content sheet — page-frame margins live in PreviewCanvas / PDF; keep this light */
+.resume-sheet {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 100%;
+  padding: 8px 4px 16px;
+}
+
+.resume-sheet--professional {
+  padding: 12px 8px 20px;
+}
+
+/* Keep sections / entries from splitting awkwardly across A4 pages */
+.resume-section,
+.resume-entry {
+  break-inside: avoid;
+  page-break-inside: avoid;
+  -webkit-column-break-inside: avoid;
+}
+
+.shadow-paper {
+  box-shadow:
+    0 1px 2px rgba(15, 23, 42, 0.06),
+    0 8px 24px rgba(15, 23, 42, 0.12);
+}
+
+/* Resume bullet lists — block layout so wraps hang under text, not under the marker */
+.resume-bullets {
+  list-style: none !important;
+  margin: 0;
+  padding: 0;
+}
+.resume-bullets > li {
+  display: block !important;
+  position: relative;
+  margin: 0;
+  padding: 0 0 0 12px;
+  line-height: 1.45;
+  list-style: none !important;
+}
+.resume-bullets > li::marker {
+  content: none !important;
+  display: none !important;
+}
+.resume-bullets > li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.62em;
+  width: 3.5px;
+  height: 3.5px;
+  border-radius: 50%;
+  background-color: currentColor;
+}
+
+/* Focus Highlight Pulse Animation */
+@keyframes focusPulse {
+  0% {
+    outline: 2px solid var(--accent-color, #0d9488);
+    box-shadow: 0 0 0 4px rgba(13, 148, 136, 0.25);
+  }
+  50% {
+    outline: 2px solid var(--accent-color, #0d9488);
+    box-shadow: 0 0 0 8px rgba(13, 148, 136, 0.4);
+  }
+  100% {
+    outline: 2px solid var(--accent-color, #0d9488);
+    box-shadow: 0 0 0 4px rgba(13, 148, 136, 0.25);
+  }
+}
+
+.focus-highlight {
+  animation: focusPulse 1.5s infinite ease-in-out;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+/* Print / PDF page setup — true A4 multi-page */
+@page {
+  size: A4 portrait;
+  margin: 0;
+}
+
+@media print {
+  html,
+  body {
+    background: white !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+  .a4-page {
+    box-shadow: none !important;
+    margin: 0 !important;
+    width: 210mm !important;
+    min-height: 297mm !important;
+  }
+}
