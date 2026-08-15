@@ -498,7 +498,7 @@ export const AgentChatPanel: React.FC = () => {
                   }}
                   placeholder="Ask about your CV design…"
                   disabled={busy}
-                  className="max-h-[120px] min-h-[24px] flex-1 resize-none overflow-y-auto bg-transparent py-1.5 text-sm leading-6 text-slate-900 outline-none placeholder:text-slate-400 disabled:cursor-not-allowed disabled:opacity-60"
+                  className="max-h-[120px] min-h-[24px] flex-1 resize-none overflow-y-auto bg-transparent py-1.5 text-base leading-6 text-slate-900 outline-none placeholder:text-slate-400 disabled:cursor-not-allowed disabled:opacity-60 sm:text-sm"
                 />
                 <button
                   type="submit"
