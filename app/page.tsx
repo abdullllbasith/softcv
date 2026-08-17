@@ -99,7 +99,7 @@ export default function LandingPage() {
   const mobileHeaderWidth = 'w-[min(18.5rem,calc(100%-2rem))]';
 
   const mobileNavLinks = [
-    { label: 'Softora', href: 'https://softora-co.vercel.app/', external: true },
+    { label: 'Softora', href: 'https://softora.lk/', external: true },
     { label: 'How it works', href: '#how' },
     { label: 'Features', href: '#features' },
     { label: 'Templates', href: '#templates' },
@@ -145,7 +145,7 @@ export default function LandingPage() {
 
             <nav className="hidden shrink-0 items-center gap-1 lg:flex">
               <a
-                href="https://softora-co.vercel.app/"
+                href="https://softora.lk/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="px-2.5 py-1.5 text-sm font-medium text-slate-600 transition-colors hover:text-slate-900"
@@ -623,7 +623,7 @@ export default function LandingPage() {
                     <ArrowUpRight className="h-4 w-4" />
                   </Link>
                   <a
-                    href="https://softora-co.vercel.app/contact"
+                    href="https://softora.lk/contact"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 rounded-xl border border-white/25 bg-white/5 px-5 py-3.5 text-sm font-medium text-white transition-colors hover:bg-white/10"
@@ -656,7 +656,7 @@ export default function LandingPage() {
               Templates
             </a>
             <a
-              href="https://softora-co.vercel.app/"
+              href="https://softora.lk/"
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-teal-700 transition-colors"
