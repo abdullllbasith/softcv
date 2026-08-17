@@ -47,11 +47,7 @@ export const metadata: Metadata = {
     google: 'i2tzUMYfYynIgoqy5Vh3NLdXTXXhde-aaX2Iahj41q0',
   },
   icons: {
-    icon: [
-      { url: '/softora-favicon.png', type: 'image/png', sizes: '32x32' },
-      { url: '/site-icon-softora.png', type: 'image/png', sizes: '48x48' },
-      { url: '/site-icon-softora.png', type: 'image/png', sizes: '192x192' },
-    ],
+    icon: [{ url: '/softora-favicon.png', type: 'image/png' }],
     shortcut: '/softora-favicon.png',
     apple: '/softora-favicon.png',
   },
