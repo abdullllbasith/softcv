@@ -45,6 +45,9 @@ export const metadata: Metadata = {
   },
   verification: {
     google: 'i2tzUMYfYynIgoqy5Vh3NLdXTXXhde-aaX2Iahj41q0',
+    other: {
+      'msvalidate.01': '9BF57EE91230B56032BA471C1B805A77',
+    },
   },
   icons: {
     icon: [{ url: '/softora-favicon.png', type: 'image/png' }],
