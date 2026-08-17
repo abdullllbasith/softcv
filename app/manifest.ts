@@ -12,12 +12,12 @@ export default function manifest(): MetadataRoute.Manifest {
     theme_color: '#0d9488',
     icons: [
       {
-        src: '/softora-favicon.png',
+        src: '/site-icon-softora.png',
         sizes: '192x192',
         type: 'image/png',
       },
       {
-        src: '/softora-favicon.png',
+        src: '/site-icon-softora.png',
         sizes: '512x512',
         type: 'image/png',
       },

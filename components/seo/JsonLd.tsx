@@ -9,7 +9,7 @@ const graph = {
       name: SITE_ORG,
       alternateName: 'Softora',
       url: 'https://softora.lk/',
-      logo: `${SITE_URL}/softora-favicon.png`,
+      logo: `${SITE_URL}/site-icon-softora.png`,
       address: {
         '@type': 'PostalAddress',
         addressLocality: 'Dharga Town',
