@@ -6,6 +6,8 @@
 
 export const NVIDIA_DEFAULT_BASE_URL = 'https://integrate.api.nvidia.com/v1';
 export const NVIDIA_DEFAULT_MODEL = 'nvidia/nemotron-3-ultra-550b-a55b:free';
+/** OpenRouter free slug for summary / bullet enhance */
+export const OPENROUTER_FREE_MODEL = 'nvidia/nemotron-3-ultra-550b-a55b:free';
 export const OPENROUTER_BASE_URL = 'https://openrouter.ai/api/v1';
 
 export type ChatMessage = {
@@ -71,8 +73,10 @@ export async function nvidiaChatCompletion(params: {
   temperature?: number;
   maxTokens?: number;
   toolChoice?: 'auto' | 'none' | 'required';
+  model?: string;
 }): Promise<ChatCompletionResponse> {
   const { apiKey, baseUrl, model, isOpenRouter } = getNvidiaConfig();
+  const resolvedModel = params.model || model;
 
   if (!apiKey) {
     throw new Error(
@@ -81,7 +85,7 @@ export async function nvidiaChatCompletion(params: {
   }
 
   const body: Record<string, unknown> = {
-    model,
+    model: resolvedModel,
     messages: params.messages,
     temperature: params.temperature ?? 0.6,
     top_p: 0.95,

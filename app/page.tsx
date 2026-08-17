@@ -642,7 +642,8 @@ export default function LandingPage() {
           <div>
             <img src="/SoftCV.png" alt="SoftCV" className="h-5 w-auto object-contain" />
             <p className="mt-3 max-w-sm text-sm leading-relaxed text-slate-500">
-              Free live resume builder by Softora. No login required.
+              Free live resume builder by Softora IT Solutions, Dharga Town, Sri Lanka. No login
+              required — ATS templates, live A4 preview, and PDF export in your browser.
             </p>
           </div>
           <div className="flex flex-wrap gap-x-8 gap-y-3 text-sm text-slate-600">

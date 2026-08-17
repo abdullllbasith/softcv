@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { nvidiaChatCompletion } from '@/lib/nvidia';
+import { nvidiaChatCompletion, OPENROUTER_FREE_MODEL } from '@/lib/nvidia';
 
 export async function POST(req: Request) {
   try {
@@ -7,6 +7,7 @@ export async function POST(req: Request) {
 
     if (type === 'summary') {
       const completion = await nvidiaChatCompletion({
+        model: OPENROUTER_FREE_MODEL,
         messages: [
           {
             role: 'system',
@@ -28,6 +29,7 @@ export async function POST(req: Request) {
 
     if (type === 'bullet') {
       const completion = await nvidiaChatCompletion({
+        model: OPENROUTER_FREE_MODEL,
         messages: [
           {
             role: 'system',

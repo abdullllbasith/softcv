@@ -1,12 +1,68 @@
 import type { Metadata, Viewport } from 'next';
 import './globals.css';
+import { JsonLd } from '@/components/seo/JsonLd';
+import {
+  DEFAULT_DESCRIPTION,
+  DEFAULT_TITLE,
+  KEYWORDS,
+  SITE_NAME,
+  SITE_ORG,
+  SITE_URL,
+} from '@/lib/seo';
 
 export const metadata: Metadata = {
-  title: 'SoftCV — Live Resume Builder by Softora',
-  description:
-    'SoftCV by Softora: build portfolio-grade resumes with live split-screen preview, templates, accent colors, drag & drop sections, and pixel-perfect PDF export.',
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: DEFAULT_TITLE,
+    template: `%s | ${SITE_NAME}`,
+  },
+  description: DEFAULT_DESCRIPTION,
+  applicationName: SITE_NAME,
+  keywords: KEYWORDS,
+  authors: [{ name: SITE_ORG, url: 'https://softora.lk' }],
+  creator: SITE_ORG,
+  publisher: SITE_ORG,
+  category: 'productivity',
+  referrer: 'origin-when-cross-origin',
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  alternates: {
+    canonical: '/',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+      'max-video-preview': -1,
+    },
+  },
+  verification: {
+    google: 'i2tzUMYfYynIgoqy5Vh3NLdXTXXhde-aaX2Iahj41q0',
+  },
   icons: {
-    icon: '/softora-favicon.png',
+    icon: [{ url: '/softora-favicon.png', type: 'image/png' }],
+    shortcut: '/softora-favicon.png',
+    apple: '/softora-favicon.png',
+  },
+  openGraph: {
+    type: 'website',
+    locale: 'en_US',
+    url: SITE_URL,
+    siteName: SITE_NAME,
+    title: DEFAULT_TITLE,
+    description: DEFAULT_DESCRIPTION,
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: DEFAULT_TITLE,
+    description: DEFAULT_DESCRIPTION,
   },
 };
 
@@ -24,7 +80,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="bg-surface text-ink min-h-full antialiased font-sans">{children}</body>
+      <body className="bg-surface text-ink min-h-full antialiased font-sans">
+        <JsonLd />
+        {children}
+      </body>
     </html>
   );
 }
